@@ -1,39 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 21:26:45 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/18 13:54:11 by yachaab          ###   ########.fr       */
+/*   Created: 2023/05/17 00:48:06 by yachaab           #+#    #+#             */
+/*   Updated: 2023/05/18 17:42:09 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/lib.h"
 
-int exit_status = 0;
-void	execution(t_data *data)
+// t_data	*init_data(t_lexer *lexer)
+// {
+// 	infile->infile = init_infile(lexer);
+// 	outfile->outfile = init_outfile(lexer);
+	
+// }
+
+t_data *parser(char *input, char **env)
 {
-	(void)data;
-	printf("exec\n");
-}
-int main(int argc, char *argv[], char *env[])
-{
-	(void)argc;(void)argv;(void)env;
-	while (1)
-	{
-		char	*input;
-		input = readline("minishell -> ");
-		if (!input)
-			exit(EXIT_FAILURE);
-		add_history(input);
-		if (lexer(input))
-		{
-			t_data	*data = parser(input, env);
-			execution(data);
-		}
-		free(input);
-	}
-	return (0);
+	(void)env;
+	t_data	*data;
+	t_lexer *lexer;
+
+	lexer  = init_lexer(input);
+	
+	return (NULL);
 }

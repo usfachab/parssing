@@ -1,17 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:29:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/15 23:42:23 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/18 17:37:44 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef STRUCT_H
+# define STRUCT_H
+
+enum	TOKEN_ENUM
+{
+    TOKEN_REDIN,
+    TOKEN_REDOUT,
+    TOKEN_HDC,
+    TOKEN_APPEND,
+};
 
 typedef struct INFILE_STRUCT
 {
@@ -25,6 +33,19 @@ typedef struct OUTFILE_STRUCT
 	struct OUTFILE_STRUCT	*next;
 }	t_outfile;
 
+typedef struct COMMAND_STRUCT
+{
+	char					**cmd_and_args;
+}	t_cmd_args;
+
+typedef struct DATA_STRUCT
+{
+	t_infile				*infile;
+	t_outfile				*outfile;
+	t_cmd_args				*cmd_args;
+	struct DATA_STRUCT		*next;
+}	t_data;
+
 typedef struct LEXER_STRUCT
 {
 	char			c;
@@ -32,15 +53,4 @@ typedef struct LEXER_STRUCT
 	char			*content;
 }	t_lexer;
 
-typedef struct DATA_STRUCT
-{
-	char					*command;
-	t_infile				*infile;
-	t_outfile				*outfile;
-	struct DATA_STRUCT		*next;
-} t_data;
-
-void	*lexer(char *input);
-t_data	*parser(char *input, char **env);
-void	execution(t_data *data);
 #endif
