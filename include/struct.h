@@ -6,20 +6,12 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:29:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/18 17:37:44 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/19 14:12:37 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
-
-enum	TOKEN_ENUM
-{
-    TOKEN_REDIN,
-    TOKEN_REDOUT,
-    TOKEN_HDC,
-    TOKEN_APPEND,
-};
 
 typedef struct INFILE_STRUCT
 {
@@ -52,5 +44,19 @@ typedef struct LEXER_STRUCT
 	unsigned int	i;
 	char			*content;
 }	t_lexer;
+
+typedef struct TOKEN_STRUCT
+{
+	enum
+	{
+		TOKEN_STRING,
+		TOKEN_PIPE,
+		TOKEN_INFILE,
+		TOKEN_OUTFILE,
+		TOKEN_HDC,
+		TOKEN_APPAND,
+	} type;
+	char *value;
+}	t_token;
 
 #endif
