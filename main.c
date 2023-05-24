@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:45 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/18 13:54:11 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/24 16:19:30 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int main(int argc, char *argv[], char *env[])
 		if (!input)
 			exit(EXIT_FAILURE);
 		add_history(input);
-		if (lexer(input))
+		if (syntax_err(input))
 		{
 			t_data	*data = parser(input, env);
 			execution(data);

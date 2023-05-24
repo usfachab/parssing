@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:48:06 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/21 15:58:33 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/24 20:59:39 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,36 @@
 	
 // }
 
+int	count_pipe(char *input)
+{
+	int	i;
+	int count;
+	
+	i = 0;
+	count = 0;
+	find_char_and_replace_with_unprintable(input);
+	printf("input 1: %s\n", input);
+	while (input[i])
+	{
+		if (input[i] == '|')
+			count++;
+		i++;
+	}
+	find_unprintable_and_replace_with_char(input);
+	return (count);
+}
+
 t_data *parser(char *input, char **env)
 {
 	(void)env;
-	//t_data	*data;
-	t_lexer *lexer;
-
-	lexer  = init_lexer(input);
+	t_data	*data;
+	int number_of_pipe;
 	
+	number_of_pipe = count_pipe(input);
+	while (number_of_pipe > 0)
+	{
+		ft_lstadd_back(&data, ft_lstnew(input));
+		number_of_pipe--;
+	}
 	return (NULL);
 }

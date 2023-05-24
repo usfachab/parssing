@@ -14,6 +14,7 @@ void	execution(t_data *data);
 /* ----------------- src folder -------------------*/
 void	find_char_and_replace_with_unprintable(char *str);
 void	find_unprintable_and_replace_with_char(char *str);
+char	**split(char *str, char del);
 /* ---------------- lexer.c file ------------------*/
 t_lexer	*init_lexer(char *content);
 void	lexer_advence(t_lexer *lexer);
@@ -22,4 +23,5 @@ void	lexer_skip_white_space(t_lexer *lexer);
 void	lexer_advence(t_lexer *lexer);
 /* ---------------- main.c file -------------------*/
 void	execution(t_data *data);
+void	*syntax_err(char *input);
 #endif
