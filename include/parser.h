@@ -1,41 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct.h                                           :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:29:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/24 19:07:58 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/29 15:00:55 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-typedef struct INFILE_STRUCT
+typedef struct FILE_STRUCT
 {
-	char					*infile;
+	char					*file_name;
+	int						type;
 	struct FILE_STRUCT		*next;
-}	t_infile;
-
-
-typedef struct OUTFILE_STRUCT
-{
-	char					*outfile;
-	struct FILE_STRUCT		*next;
-}	t_outfile;
-
-typedef struct COMMAND_STRUCT
-{
-	char					**cmd_and_args;
-}	t_cmd_args;
+}	t_file;
 
 typedef struct DATA_STRUCT
 {
-	t_infile				*infile;
-	t_outfile				*outfile;
-	t_cmd_args				*cmd_args;
+	char					*cmd_args;
+	t_file					*file;
 	struct DATA_STRUCT		*next;
 }	t_data;
 

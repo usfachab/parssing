@@ -6,13 +6,13 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 17:52:42 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/24 21:06:58 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/29 16:50:06 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/lib.h"
 
-t_list	*ft_lstlast(t_list *lst)
+void	*ft_lstlast(void *lst)
 {
 	while (lst)
 	{
@@ -23,21 +23,36 @@ t_list	*ft_lstlast(t_list *lst)
 	return (lst);
 }
 
-// t_list	*ft_lstnew(void *content, int type)
-// {
-// 	t_list	*node;
+t_file	*ft_lstnew_subnode(char *content, int type)
+{
+	t_file	*node;
 
-// 	node = NULL;
-// 	node = (t_list *)malloc(sizeof(t_list));
-// 	if (!node)
-// 		return (NULL);
-// 	node->content = content;
-// 	node->type = type;
-// 	node->next = NULL;
-// 	return (node);
-// }
+	node = NULL;
+	node = (t_file *)malloc(sizeof(t_file));
+	if (!node)
+		return (NULL);
+	node->file_name = content;
+	node->type = type;
+	node->next = NULL;
+	return (node);
+}
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+
+t_data *ft_lstnew_node(char *command, t_file *files)
+{
+	t_data	*node;
+
+	node = NULL;
+	node = (t_data *)malloc(sizeof(t_data));
+	if (!node)
+		return (NULL);
+	node->cmd_args = command;
+	node->file = files;
+	node->next = NULL;
+	return (node);
+}
+
+void	ft_lstadd_back(void **lst, void *new)
 {
 	t_data	*last;
 
@@ -50,22 +65,17 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	else
 		last->next = new;
 }
+// t_data	*ft_lstnew(char *input)
+// {
+// 	t_data	*node;
 
-t_infile *init_infile()
-{
-	
-}
-t_data	*ft_lstnew(char *input)
-{
-	t_data	*node;
-
-	node = NULL;
-	node = (t_data *)malloc(sizeof(t_data));
-	if (!node)
-		return (NULL);
-	node->infile = init_infile(input);
-	node->outfile = init_outfile(input);
-	node->cmd_args = NULL;
-	node->next = NULL;
-	return (node);
-}
+// 	node = NULL;
+// 	node = (t_data *)malloc(sizeof(t_data));
+// 	if (!node)
+// 		return (NULL);
+// 	node->infile = init_infile(input);
+// 	node->outfile = init_outfile(input);
+// 	node->cmd_args = NULL;
+// 	node->next = NULL;
+// 	return (node);
+// }

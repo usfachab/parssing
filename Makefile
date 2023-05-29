@@ -6,21 +6,21 @@ CFALGS = -Wextra -Werror -Wall
 
 LDFLAG = -lreadline -I/Users/yachaab/.brew/Cellar/readline/8.2.1/lib/ -L/Users/yachaab/.brew/Cellar/readline/8.2.1/lib/
 
-MINI_SRC = main.c lexer.c parser.c syntax.c src/find_and_replace.c src/ft_split.c
+SRC = main.c lexer.c parser.c syntax.c expand.c src/find_and_replace.c src/ft_split.c src/ft_strjoin.c
 
-MINI_OBJ = $(MINI_SRC:.c=.o)
+OBJ = $(SRC:.c=.o)
 
 all : $(NAME)
 
-$(NAME) : $(MINI_OBJ)
-	@$(CC) $(CFALGS) -o $@ $(MINI_SRC) $(LDFLAG)
+$(NAME) : $(OBJ)
+	@$(CC) $(CFALGS) -o $@ $(SRC) $(LDFLAG)
 
 %.o : %.c
-	@$(CC) $(CFALGS) -o $@ $(MINI_SRC) $(LDFLAG)
+	@$(CC) $(CFALGS) -o $@ $(SRC) $(LDFLAG)
 clean :
-	@rm -fr $(MINI_OBJ)
+	@rm -fr $(OBJ)
 
 fclean : clean
-	@rm -fr $(MINI_OBJ) $(NAME)
+	@rm -fr $(OBJ) $(NAME)
 
 re : fclean all

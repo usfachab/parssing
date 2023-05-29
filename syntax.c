@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 13:38:06 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/24 19:56:48 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/27 15:13:29 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	*redirection_error(char *input)
 			input = skip_white_space(input);
 			if (!(*input) || *input == '|' || (*input == '<' || *input == '>'))
 			{
-				printf("syntax error on redirections\n");
+				printf("syntax error near to token <\n");
 				return (NULL);
 			}
 		}
@@ -135,7 +135,7 @@ void	*redirection_error(char *input)
 			input = skip_white_space(input);
 			if (!(*input) || *input == '|' || (*input == '>' || *input == '<'))
 			{
-				printf("syntax error on redirections\n");
+				printf("syntax error near to token >\n");
 				return (NULL);
 			}
 		}

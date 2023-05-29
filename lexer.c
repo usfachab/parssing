@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 23:28:44 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/24 13:39:13 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/29 15:06:56 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,33 @@ char	*lexer_collect_string(t_lexer *lexer)
 	return (string);
 }
 
+char *lexer_collect_file_name(t_lexer *lexer)
+{
+	char	*string;
+	int		len;
+
+	string = NULL;
+	len = 0;
+	lexer_skip_white_space(lexer);
+	while (!identifier(lexer) && lexer->c != ' ')
+	{
+		char	*tmp = malloc(len + 2);
+		if (!tmp)
+			exit(EXIT_FAILURE);
+		if (string != NULL)
+		{
+			memcpy(tmp, string, len);
+			free(string);
+		}
+		string = tmp;
+		string[len] = lexer->c;
+		string[len + 1] = '\0';
+		len++;
+		lexer_advence(lexer);
+	}
+	return (string);
+}
+
 t_token	*lexer_collect_identifier(t_lexer *lexer)
 {
 	if (lexer->c == '<')
@@ -111,9 +138,9 @@ t_token	*lexer_collect_identifier(t_lexer *lexer)
 		if (lexer->c == '<')
 		{
 			lexer_advence(lexer);
-			return (init_token(TOKEN_HDC, "<<"));
+			return (init_token(TOKEN_HDC, lexer_collect_file_name(lexer)));
 		}
-		return(init_token(TOKEN_INFILE, "<"));
+		return(init_token(TOKEN_INFILE, lexer_collect_file_name(lexer)));
 	}
 	else if (lexer->c == '>')
 	{
@@ -121,9 +148,9 @@ t_token	*lexer_collect_identifier(t_lexer *lexer)
 		if (lexer->c == '>')
 		{
 			lexer_advence(lexer);
-			return (init_token(TOKEN_APPAND, ">>"));
+			return (init_token(TOKEN_APPAND, lexer_collect_file_name(lexer)));
 		}
-		return(init_token(TOKEN_OUTFILE, ">"));
+		return(init_token(TOKEN_OUTFILE, lexer_collect_file_name(lexer)));
 	}
 	return (NULL);
 }

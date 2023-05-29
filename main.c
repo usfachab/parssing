@@ -6,13 +6,14 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:45 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/24 16:19:30 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/28 13:51:12 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/lib.h"
 
 int exit_status = 0;
+
 void	execution(t_data *data)
 {
 	(void)data;
@@ -30,7 +31,8 @@ int main(int argc, char *argv[], char *env[])
 		add_history(input);
 		if (syntax_err(input))
 		{
-			t_data	*data = parser(input, env);
+			input = expand_env_variables(input);
+			t_data	*data = parser(input);
 			execution(data);
 		}
 		free(input);
