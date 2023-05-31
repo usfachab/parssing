@@ -6,13 +6,24 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 17:52:42 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/29 16:50:06 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/29 18:09:54 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/lib.h"
 
-void	*ft_lstlast(void *lst)
+void	*ft_lstlast_subnode(t_file *lst)
+{
+	while (lst)
+	{
+		if (!lst->next)
+			break ;
+		lst = lst->next;
+	}
+	return (lst);
+}
+
+void	*ft_lstlast_node(t_data *lst)
 {
 	while (lst)
 	{
@@ -52,14 +63,28 @@ t_data *ft_lstnew_node(char *command, t_file *files)
 	return (node);
 }
 
-void	ft_lstadd_back(void **lst, void *new)
+void	ft_lstadd_back_subnode(t_file **lst, t_file *new)
+{
+	t_file	*last;
+
+	last = NULL;
+	if (!lst || !new)
+		return ;
+	last = ft_lstlast_subnode(*lst);
+	if (last == NULL)
+		*lst = new;
+	else
+		last->next = new;
+}
+
+void	ft_lstadd_back_node(t_data **lst, t_data *new)
 {
 	t_data	*last;
 
 	last = NULL;
 	if (!lst || !new)
 		return ;
-	last = ft_lstlast(*lst);
+	last = ft_lstlast_node(*lst);
 	if (last == NULL)
 		*lst = new;
 	else

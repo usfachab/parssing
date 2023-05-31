@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:29:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/29 15:00:55 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/30 23:35:43 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct TOKEN_STRUCT
 		TOKEN_OUTFILE,
 		TOKEN_HDC,
 		TOKEN_APPAND,
+		TOKEN_AMBIGOUS
 	} type;
 	char *value;
 }	t_token;

@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 15:57:34 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/29 16:03:52 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/05/29 18:37:02 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ size_t ft_strlen(char *str)
 	size_t i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 		i++;
 	return (i);
@@ -38,8 +40,6 @@ char	*_join(char *path, char *cmd)
 		ptr[i] = path[i];
 		i++;
 	}
-	ptr[i] = '/';
-	i += 1;
 	ptr[i] = 0;
 	j = 0;
 	while (j < ft_strlen(cmd))

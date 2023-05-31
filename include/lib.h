@@ -7,23 +7,25 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "global.h"
-/* --------------- current folder -----------------*/
+
+/* --------------- current folder ------------------*/
 void	*lexer(char *command);
-void	*parser(char *command);
-char    *expand_env_variables(char *command);
+t_data	*parser(char *command);
 void	execution(t_data *data);
-/* ----------------- src folder -------------------*/
+/* ----------------- src folder --------------------*/
 void	find_char_and_replace_with_unprintable(char *str);
 void	find_unprintable_and_replace_with_char(char *str);
-void	ft_lstadd_back(void **lst, void *new);
-t_data *ft_lstnew_node(char *command, t_file *files);
+t_data	*ft_lstnew_node(char *command, t_file *files);
 t_file	*ft_lstnew_subnode(char *content, int type);
-char	**split(char *str, char del);
+void	ft_lstadd_back_node(t_data **lst, t_data *new);
+void	ft_lstadd_back_subnode(t_file **lst, t_file *new);
 char	*_join(char *path, char *cmd);
-/* ---------------- lexer.c file ------------------*/
+/* ---------------- lexer.c file --------------------*/
 t_lexer	*init_lexer(char *content);
 t_token	*lexer_get_next_token(t_lexer *lexer);
-/* ---------------- main.c file -------------------*/
-void	execution(t_data *data);
+/* ---------------- main.c file ---------------------*/
 void	*syntax_err(char *input);
+/* ---------------- expand.c file -------------------*/
+char    *expand_env_variables(char *command);
+int		ambigous(char *variable);
 #endif
