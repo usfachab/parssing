@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:29:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/30 23:35:43 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/01 19:31:52 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct FILE_STRUCT
 
 typedef struct DATA_STRUCT
 {
-	char					*cmd_args;
+	char					**cmd_args;
 	t_file					*file;
 	struct DATA_STRUCT		*next;
 }	t_data;
@@ -48,5 +48,29 @@ typedef struct TOKEN_STRUCT
 	} type;
 	char *value;
 }	t_token;
+
+typedef struct PARSER_VARIABLES
+{
+	t_data	*data;
+	t_lexer	*lexer;
+	t_token	*token;
+	t_file	*file;
+	char	*command;
+	char	**_command;
+}	t_parser_var;
+
+typedef struct EXPAND_VARIABLES
+{
+	char	*neo_value;
+	char	*start;
+	char	*end;
+	char	*buffer;
+	char	*variable;
+	char	*head;
+	char	*dollarsign;
+	size_t	length;
+	int		d__quote;
+	int		s__quote;
+} t_exp_var;
 
 #endif

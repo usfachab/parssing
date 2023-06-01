@@ -2,11 +2,11 @@ NAME = lexer
 
 CC = cc
 
-CFALGS = -Wextra -Werror -Wall
+CFALGS = -Wextra -Werror -Wall -fsanitize=address
 
 LDFLAG = -lreadline -I/Users/yachaab/.brew/Cellar/readline/8.2.1/lib/ -L/Users/yachaab/.brew/Cellar/readline/8.2.1/lib/
 
-SRC = main.c lexer.c parser.c syntax.c expand.c src/find_and_replace.c src/ft_split.c src/ft_strjoin.c src/node_list.c
+SRC = main.c lexer.c parser.c syntax.c __syntax.c expand.c extra.c token.c src/find_and_replace.c src/ft_split.c src/ft_strjoin.c src/node_list.c
 
 OBJ = $(SRC:.c=.o)
 

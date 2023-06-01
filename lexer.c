@@ -6,25 +6,13 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 23:28:44 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/31 21:22:40 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/01 23:55:34 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/lib.h"
 
-t_token *init_token(int type, char *value)
-{
-	t_token *token;
-
-	token = malloc(sizeof(struct TOKEN_STRUCT));
-	if (!token)
-		exit(EXIT_FAILURE);
-	token->type = type;
-	token->value = value;
-	return (token);
-}
-
-t_lexer *init_lexer(char *content)
+t_lexer	*init_lexer(char *content)
 {
 	t_lexer	*lexer;
 
@@ -51,81 +39,27 @@ void	lexer_skip_white_space(t_lexer *lexer)
 	while ((lexer->c >= 9 && lexer->c <= 13) || lexer->c == 32)
 		lexer_advence(lexer);
 }
-void	lexer_skip_quote(t_lexer *lexer)
-{
-	while (lexer->c == '\'' || lexer->c == '\"')
-		lexer_advence(lexer);
-}
+
 int	identifier(t_lexer *lexer)
 {
-	if (lexer->c == '|' || lexer->c == '<'|| lexer->c == '>' || lexer->c == '\0' || lexer->c == '\n')
+	if (lexer->c == '|' || lexer->c == '<' || lexer->c == '>'
+		|| lexer->c == '\0' || lexer->c == '\n' || lexer->c == ' ')
 		return (1);
 	return (0);
 }
 
-t_token	*lexer_advence_with_token(t_lexer *lexer, t_token *token)
-{
-	lexer_advence(lexer);
-	return (token);
-}
-
-char	*lexer_char_as_string(t_lexer *lexer)
-{
-	char	*string;
-
-	string = malloc(2 * sizeof(char));
-	if (!string)
-		exit(EXIT_FAILURE);
-	string[0] = lexer->c;
-	string[1] = '\0';
-	return (string);
-}
-
 char	*lexer_collect_string(t_lexer *lexer)
 {
+	char	*tmp;
 	char	*string;
 	int		len;
 
 	string = NULL;
-	len = 0;
-	// lexer_skip_quote(lexer);
 	lexer_skip_white_space(lexer);
-	while (!identifier(lexer))
-	{
-		char	*tmp = malloc(len + 2);
-		if (!tmp)
-			exit(EXIT_FAILURE);
-		if (string != NULL)
-		{
-			memcpy(tmp, string, len);
-			free(string);
-		}
-		string = tmp;
-		string[len] = lexer->c;
-		string[len + 1] = '\0';
-		len++;
-		lexer_advence(lexer);
-	}
-	return (string);
-}
-
-char *lexer_collect_file_name(t_lexer *lexer)
-{
-	// char	del;
-	char	*string;
-	int		len;
-
-	string = NULL;
 	len = 0;
-	// lexer_skip_white_space(lexer);
-	// if (lexer->c == '\'' || lexer->c == '\"')
-	// 	del = lexer->c;
-	// else
-	// 	del = 32;
-	// lexer_skip_quote(lexer);
 	while (!identifier(lexer))
 	{
-		char	*tmp = malloc(len + 2);
+		tmp = malloc(len + 2);
 		if (!tmp)
 			exit(EXIT_FAILURE);
 		if (string != NULL)
@@ -140,56 +74,4 @@ char *lexer_collect_file_name(t_lexer *lexer)
 		lexer_advence(lexer);
 	}
 	return (string);
-}
-
-t_token	*lexer_collect_identifier(t_lexer *lexer)
-{
-	char	*value;
-	
-	if (lexer->c == '<')
-	{
-		lexer_advence(lexer);
-		if (lexer->c == '<')
-		{
-			lexer_advence(lexer);
-			return (init_token(TOKEN_HDC, lexer_collect_file_name(lexer)));
-		}
-		value = lexer_collect_file_name(lexer);
-		// if (ambigous(value))
-		// 	return(init_token(TOKEN_AMBIGOUS, value));
-		return(init_token(TOKEN_INFILE, value));
-	}
-	else if (lexer->c == '>')
-	{
-		lexer_advence(lexer);
-		if (lexer->c == '>')
-		{
-			lexer_advence(lexer);
-			value = lexer_collect_file_name(lexer);
-			// if (ambigous(value))
-			// 	return(init_token(TOKEN_AMBIGOUS, value));
-			return (init_token(TOKEN_APPAND, value));
-		}
-		value = lexer_collect_file_name(lexer);
-		// if (ambigous(value))
-		// 	return(init_token(TOKEN_AMBIGOUS, value));
-		return(init_token(TOKEN_OUTFILE, value));
-	}
-	return (NULL);
-}
-
-
-t_token	*lexer_get_next_token(t_lexer *lexer)
-{
-	while (lexer->c && lexer->i < strlen(lexer->content))
-	{
-		lexer_skip_white_space(lexer);
-		if (lexer->c == '<' || lexer->c == '>')
-			return (lexer_collect_identifier(lexer));
-		if (lexer->c == '|')
-			return (lexer_advence_with_token(lexer, init_token(TOKEN_PIPE, lexer_char_as_string(lexer))));
-		else 
-			return (init_token(TOKEN_STRING, lexer_collect_string(lexer)));
-	}
-	return (NULL);
 }

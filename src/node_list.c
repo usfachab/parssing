@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 17:52:42 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/29 18:09:54 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/01 14:55:39 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_file	*ft_lstnew_subnode(char *content, int type)
 }
 
 
-t_data *ft_lstnew_node(char *command, t_file *files)
+t_data *ft_lstnew_node(char **command, t_file *files)
 {
 	t_data	*node;
 

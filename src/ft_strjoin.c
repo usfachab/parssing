@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 15:57:34 by yachaab           #+#    #+#             */
-/*   Updated: 2023/05/29 18:37:02 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/01 11:54:19 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*_join(char *path, char *cmd)
 	char		*ptr;
 
 	i = 0;
-	ptr = malloc(ft_strlen(path) + ft_strlen(cmd) + 2);
+	ptr = malloc(ft_strlen(path) + ft_strlen(cmd) + 3);
 	if (!ptr)
 		return (NULL);
 	while (i < ft_strlen(path))
@@ -40,6 +40,8 @@ char	*_join(char *path, char *cmd)
 		ptr[i] = path[i];
 		i++;
 	}
+	ptr[i] = ' ';
+	i++;
 	ptr[i] = 0;
 	j = 0;
 	while (j < ft_strlen(cmd))
