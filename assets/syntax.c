@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/lib.h"
+#include "../include/lib.h"
 
 void	*search_for_identifier_form_front(char *input, char id)
 {

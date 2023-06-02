@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/lib.h"
+#include "../include/lib.h"
 
 int	_white_space(char c)
 {
@@ -37,16 +37,19 @@ char	*add_quote_to_variable(char *value)
 
 	i = 0;
 	valen = strlen(value);
-	new_val = malloc(valen + 3);
+	new_val = malloc(sizeof(char) * (valen + 3));
 	new_val[i] = '\"';
 	while (value[i])
 	{
-		new_val[i + 1] = value[i];
+		if (value[i] == 32)
+			new_val[i + 1] = -42;
+		else
+			new_val[i + 1] = value[i];
 		i++;
 	}
 	new_val[i + 1] = '\"';
 	new_val[i + 2] = '\0';
-	free(value);
+	//free(value);
 	return (new_val);
 }
 

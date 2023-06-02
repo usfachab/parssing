@@ -10,18 +10,17 @@
 
 /* --------------- current folder ------------------*/
 t_data	*parser(char *command);
-void	execution(t_data *data);
 /* ----------------- src folder --------------------*/
 void	find_char_and_replace_with_unprintable(char *str);
 void	find_unprintable_and_replace_with_char(char *str);
-void	find_space_replace_unprintable(char *str);
+// void	find_space_replace_unprintable(char *str);
 void	find_unprintable_replace_space(char **str);
 t_data	*ft_lstnew_node(char **command, t_file *files);
 t_file	*ft_lstnew_subnode(char *content, int type);
 void	ft_lstadd_back_node(t_data **lst, t_data *new);
 void	ft_lstadd_back_subnode(t_file **lst, t_file *new);
 char	*_join(char *path, char *cmd);
-char **split(char *str, char del);
+char    **split(char *str, char del);
 /* -------------------- lexer -----------------------*/
 t_lexer	*init_lexer(char *content);
 char	*lexer_collect_string(t_lexer *lexer);

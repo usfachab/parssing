@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/lib.h"
+#include "../include/lib.h"
 
 void	*unclosed_quote(char *input)
 {

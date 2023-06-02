@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/lib.h"
+#include "../include/lib.h"
 
 t_token	*lexer_collect_identifier(t_lexer *lexer)
 {

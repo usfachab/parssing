@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "include/lib.h"
+#include  "../include/lib.h"
 
 char	*get_env_variable(char *name)
 {

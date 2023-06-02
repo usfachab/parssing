@@ -10,7 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/lib.h"
+#include "../include/lib.h"
+
+int variable_contain_42(char *value)
+{
+	while (*value)
+	{
+		if (*value == -42)
+			return (1);
+		value++;
+	}
+	return (0);
+}
+
+void variable_reverce_42(char *value)
+{
+	while (*value)
+	{
+		if (*value == -42)
+			*value = 32;
+		value++;
+	}
+}
 
 char	*skip_white_space(char *input)
 {
@@ -39,16 +60,26 @@ t_data	*parser(char *input)
 {
 	t_parser_var	*var;
 
-	var = init_var(input);
 	find_char_and_replace_with_unprintable(input);
+	var = init_var(input);
 	while (var->token)
 	{
 		find_unprintable_and_replace_with_char(var->token->value);
 		if (var->token->type == 0)
+		{
+			variable_reverce_42(var->token->value);
 			var->command = _join(var->command, var->token->value);
+		}
+
+		
 		if (var->token->type != 0 && var->token->type != 1)
-			ft_lstadd_back_subnode(&(var->file),
-				ft_lstnew_subnode(var->token->value, var->token->type));
+		{
+			if (variable_contain_42(var->token->value))
+				var->token->type = -1;
+			ft_lstadd_back_subnode(&(var->file), ft_lstnew_subnode(var->token->value, var->token->type));
+		}
+
+		
 		if (var->token->type == 1 ||!var->lexer->c)
 		{
 			find_char_and_replace_with_unprintable(var->command);
