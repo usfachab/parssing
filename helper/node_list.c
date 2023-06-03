@@ -6,33 +6,11 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 17:52:42 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/01 14:55:39 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/03 21:10:59 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/lib.h"
-
-void	*ft_lstlast_subnode(t_file *lst)
-{
-	while (lst)
-	{
-		if (!lst->next)
-			break ;
-		lst = lst->next;
-	}
-	return (lst);
-}
-
-void	*ft_lstlast_node(t_data *lst)
-{
-	while (lst)
-	{
-		if (!lst->next)
-			break ;
-		lst = lst->next;
-	}
-	return (lst);
-}
 
 t_file	*ft_lstnew_subnode(char *content, int type)
 {
@@ -48,8 +26,7 @@ t_file	*ft_lstnew_subnode(char *content, int type)
 	return (node);
 }
 
-
-t_data *ft_lstnew_node(char **command, t_file *files)
+t_data	*ft_lstnew_node(char **command, t_file *files)
 {
 	t_data	*node;
 
@@ -90,17 +67,3 @@ void	ft_lstadd_back_node(t_data **lst, t_data *new)
 	else
 		last->next = new;
 }
-// t_data	*ft_lstnew(char *input)
-// {
-// 	t_data	*node;
-
-// 	node = NULL;
-// 	node = (t_data *)malloc(sizeof(t_data));
-// 	if (!node)
-// 		return (NULL);
-// 	node->infile = init_infile(input);
-// 	node->outfile = init_outfile(input);
-// 	node->cmd_args = NULL;
-// 	node->next = NULL;
-// 	return (node);
-// }

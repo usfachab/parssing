@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 20:08:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/01 23:43:39 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/03 17:04:36 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*get_env_variable(char *name)
 	char		**env;
 	size_t		len;
 
+	if (!name)
+		return (NULL);
 	env = environ;
 	len = strlen(name);
 	while (*env != NULL)

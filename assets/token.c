@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:48:29 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/01 23:57:23 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/03 18:11:56 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ t_token	*lexer_collect_identifier(t_lexer *lexer)
 		if (lexer->c == '<')
 		{
 			lexer_advence(lexer);
-			return (init_token(TOKEN_HDC, lexer_collect_string(lexer)));
+			return (init_token(TOKEN_HDC, lexer_collect_file_name(lexer)));
 		}
-		return (init_token(TOKEN_INFILE, lexer_collect_string(lexer)));
+		return (init_token(TOKEN_INFILE, lexer_collect_file_name(lexer)));
 	}
 	else if (lexer->c == '>')
 	{
@@ -30,9 +30,9 @@ t_token	*lexer_collect_identifier(t_lexer *lexer)
 		if (lexer->c == '>')
 		{
 			lexer_advence(lexer);
-			return (init_token(TOKEN_APPAND, lexer_collect_string(lexer)));
+			return (init_token(TOKEN_APPAND, lexer_collect_file_name(lexer)));
 		}
-		return (init_token(TOKEN_OUTFILE, lexer_collect_string(lexer)));
+		return (init_token(TOKEN_OUTFILE, lexer_collect_file_name(lexer)));
 	}
 	return (NULL);
 }
@@ -62,7 +62,7 @@ t_token	*init_token(int type, char *value)
 	token = malloc(sizeof(struct TOKEN_STRUCT));
 	if (!token)
 		exit(EXIT_FAILURE);
-	token->type = type;
+	token->e_type = type;
 	token->value = value;
 	return (token);
 }

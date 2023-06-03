@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 15:51:16 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/01 18:47:59 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/03 17:32:57 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*unclosed_quote(char *input)
 	char	quote;
 
 	i = 0;
-	while (input[i])
+	while (input && input[i])
 	{
 		if (input[i] == '\'' || input[i] == '"')
 		{
@@ -43,9 +43,9 @@ void	*unclosed_quote(char *input)
 
 int	redirection(char *input)
 {
-	if (*input == '>')
+	if (input && *input == '>')
 		input++;
-	else if (*input == '<')
+	else if (input && *input == '<')
 		input++;
 	else
 		return (0);
@@ -54,7 +54,7 @@ int	redirection(char *input)
 
 int	inredirect(char *input)
 {
-	if (*input == '<')
+	if (input && *input == '<')
 	{
 		input++;
 		if (*input == '<')
@@ -71,7 +71,7 @@ int	inredirect(char *input)
 
 int	outredirect(char *input)
 {
-	if (*input == '>')
+	if (input && *input == '>')
 	{
 		input++;
 		if (*input == '>')
@@ -89,7 +89,7 @@ int	outredirect(char *input)
 
 void	*redirection_error(char *input)
 {
-	while (*input)
+	while (input && *input)
 	{
 		if (!inredirect(input))
 			return (NULL);

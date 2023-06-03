@@ -6,12 +6,12 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:29:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/01 19:31:52 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/03 17:16:46 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCT_H
-# define STRUCT_H
+#ifndef PARSER_H
+# define PARSER_H
 
 typedef struct FILE_STRUCT
 {
@@ -42,11 +42,11 @@ typedef struct TOKEN_STRUCT
 		TOKEN_PIPE,
 		TOKEN_INFILE,
 		TOKEN_OUTFILE,
-		TOKEN_HDC,
 		TOKEN_APPAND,
+		TOKEN_HDC,
 		TOKEN_AMBIGOUS
-	} type;
-	char *value;
+	} e_type;
+	char	*value;
 }	t_token;
 
 typedef struct PARSER_VARIABLES
@@ -71,6 +71,6 @@ typedef struct EXPAND_VARIABLES
 	size_t	length;
 	int		d__quote;
 	int		s__quote;
-} t_exp_var;
+}	t_exp_var;
 
 #endif

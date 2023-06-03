@@ -6,39 +6,11 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:48:06 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/01 23:46:45 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/03 23:16:32 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/lib.h"
-
-int variable_contain_42(char *value)
-{
-	while (*value)
-	{
-		if (*value == -42)
-			return (1);
-		value++;
-	}
-	return (0);
-}
-
-void variable_reverce_42(char *value)
-{
-	while (*value)
-	{
-		if (*value == -42)
-			*value = 32;
-		value++;
-	}
-}
-
-char	*skip_white_space(char *input)
-{
-	while ((*input >= 9 && *input <= 13) || *input == 32)
-		input++;
-	return (input);
-}
 
 t_parser_var	*init_var(char *input)
 {
@@ -56,7 +28,36 @@ t_parser_var	*init_var(char *input)
 	return (var);
 }
 
-t_data	*parser(char *input)
+void	collect_command(t_parser_var	*var)
+{
+	if (var->token->e_type == 0)
+	{
+		if (strchr(var->token->value, '$'))
+			var->token->value = expand_env_variables(var->token->value);
+		variable_reverce_42(var->token->value);
+		find_char_and_replace_with_unprintable(var->token->value);
+		var->command = _join(var->command, var->token->value);
+	}
+}
+
+void	save_file(t_parser_var	*var)
+{
+	if (var->token->e_type == 2 || var->token->e_type == 3
+		|| var->token->e_type == 4)
+	{
+		if (strchr(var->token->value, '$'))
+		{
+			var->token->value = expand_env_variables(var->token->value);
+			if (variable_contain_42(var->token->value))
+				var->token->e_type = -1;
+		}
+		find_unprintable_and_replace_with_char(var->token->value);
+		ft_lstadd_back_subnode(&(var->file),
+			ft_lstnew_subnode(var->token->value, var->token->e_type));
+	}
+}
+
+t_parser_var	*parser(char *input)
 {
 	t_parser_var	*var;
 
@@ -64,33 +65,22 @@ t_data	*parser(char *input)
 	var = init_var(input);
 	while (var->token)
 	{
-		find_unprintable_and_replace_with_char(var->token->value);
-		if (var->token->type == 0)
+		collect_command(var);
+		save_file(var);
+		if (var->token->e_type == 5)
+			ft_lstadd_back_subnode(&(var->file),
+				ft_lstnew_subnode(var->token->value, var->token->e_type));
+		if (var->token->e_type == 1 ||!var->lexer->c)
 		{
-			variable_reverce_42(var->token->value);
-			var->command = _join(var->command, var->token->value);
-		}
-
-		
-		if (var->token->type != 0 && var->token->type != 1)
-		{
-			if (variable_contain_42(var->token->value))
-				var->token->type = -1;
-			ft_lstadd_back_subnode(&(var->file), ft_lstnew_subnode(var->token->value, var->token->type));
-		}
-
-		
-		if (var->token->type == 1 ||!var->lexer->c)
-		{
-			find_char_and_replace_with_unprintable(var->command);
 			var->_command = split(var->command, ' ');
 			find_unprintable_replace_space(var->_command);
 			ft_lstadd_back_node(&(var->data),
 				ft_lstnew_node(var->_command, var->file));
-			var->file = NULL;
+			free(var->command);
 			var->command = strdup("");
+			var->file = NULL;
 		}
 		var->token = lexer_get_next_token(var->lexer);
 	}
-	return (var->data);
+	return (var);
 }
