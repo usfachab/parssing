@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:48:06 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/03 23:16:32 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/03 23:55:03 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,46 @@ t_parser_var	*init_var(char *input)
 	var->_command = NULL;
 	return (var);
 }
+
+char *skip_quote(char *value)
+{
+	char	*tmp;
+	char	*string;
+	int		len;
+	int i = 0;
+	string = NULL;
+	len = 0;
+	while (value[i])
+	{
+		if (value[i] == '\"' || value[i] == '\'')
+		{
+			i++;
+			while (value[i])
+			{
+				if (value[i] == ' ')
+					i++;
+				else
+					break;
+			}
+		}
+		
+		tmp = malloc(len + 2);
+		if (!tmp)
+			exit(EXIT_FAILURE);
+		if (string != NULL)
+		{
+			memcpy(tmp, string, len);
+			free(string);
+		}
+		string = tmp;
+		string[len] = value[i];
+		string[len + 1] = '\0';
+		len++;
+		value++;
+	}
+	return (string);
+}
+
 
 void	collect_command(t_parser_var	*var)
 {
@@ -53,7 +93,7 @@ void	save_file(t_parser_var	*var)
 		}
 		find_unprintable_and_replace_with_char(var->token->value);
 		ft_lstadd_back_subnode(&(var->file),
-			ft_lstnew_subnode(var->token->value, var->token->e_type));
+			ft_lstnew_subnode(skip_quote(var->token->value), var->token->e_type));
 	}
 }
 
@@ -69,10 +109,10 @@ t_parser_var	*parser(char *input)
 		save_file(var);
 		if (var->token->e_type == 5)
 			ft_lstadd_back_subnode(&(var->file),
-				ft_lstnew_subnode(var->token->value, var->token->e_type));
+				ft_lstnew_subnode(skip_quote(var->token->value), var->token->e_type));
 		if (var->token->e_type == 1 ||!var->lexer->c)
 		{
-			var->_command = split(var->command, ' ');
+			var->_command = split(skip_quote(var->command), ' ');
 			find_unprintable_replace_space(var->_command);
 			ft_lstadd_back_node(&(var->data),
 				ft_lstnew_node(var->_command, var->file));
