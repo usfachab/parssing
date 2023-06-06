@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 20:08:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/03 17:04:36 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/07 00:01:39 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,24 @@ void	start_expanding(t_exp_var *exp, char *value)
 	}
 }
 
+void	remove_variable(t_exp_var *exp, char *value)
+{
+	exp->neo_value = malloc(sizeof(char) * ((strlen(exp->head) - (exp->length + 1))));
+	if ((exp->start - exp->head) == 0)
+		
+	memcpy(exp->neo_value, exp->head, exp->start - exp->head);
+	memcpy(exp->neo_value + (exp->start - exp->head - 1), exp->end, strlen(exp->end));
+	exp->neo_value[strlen(exp->neo_value)] = 0;
+	exp->head = strdup(exp->neo_value);
+	exp->dollarsign = strchr(exp->head, '$');
+	if (!exp->dollarsign)
+		value = exp->dollarsign;
+	else
+		value = exp->dollarsign + 1;
+	free(exp->neo_value);
+	exp->variable = NULL;
+}
+
 char	*expand_env_variables(char *value)
 {
 	t_exp_var	*exp;
@@ -104,11 +122,15 @@ char	*expand_env_variables(char *value)
 		{
 			exp->variable = get_env_variable(exp->buffer);
 			free(exp->buffer);
+			if (!exp->variable)
+				remove_variable(exp, value);
 			exp->buffer = NULL;
 		}
 		if (exp->variable && variable_contain_white_space(exp->variable))
 			exp->variable = add_quote_to_variable(exp->variable);
-		start_expanding(exp, value);
+		if (exp->variable)
+			start_expanding(exp, value);
+		
 		value++;
 	}
 	return (exp->head);

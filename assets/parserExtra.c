@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:58 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/06 15:15:19 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/06 15:18:34 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,17 @@ char	*skip_white_space(char *input)
 	while (input && ((*input >= 9 && *input <= 13) || *input == 32))
 		input++;
 	return (input);
+}
+
+static char	which_quote(char *value)
+{
+	while (value && *value)
+	{
+		if (*value == '\'' || *value == '\"')
+			return (*value);
+		value++;
+	}
+	return (0);
 }
 
 char	*skip_quote(char *value)
