@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:48:06 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/03 23:55:03 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/06 15:15:11 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,45 +28,16 @@ t_parser_var	*init_var(char *input)
 	return (var);
 }
 
-char *skip_quote(char *value)
+char	which_quote(char *value)
 {
-	char	*tmp;
-	char	*string;
-	int		len;
-	int i = 0;
-	string = NULL;
-	len = 0;
-	while (value[i])
+	while (value && *value)
 	{
-		if (value[i] == '\"' || value[i] == '\'')
-		{
-			i++;
-			while (value[i])
-			{
-				if (value[i] == ' ')
-					i++;
-				else
-					break;
-			}
-		}
-		
-		tmp = malloc(len + 2);
-		if (!tmp)
-			exit(EXIT_FAILURE);
-		if (string != NULL)
-		{
-			memcpy(tmp, string, len);
-			free(string);
-		}
-		string = tmp;
-		string[len] = value[i];
-		string[len + 1] = '\0';
-		len++;
+		if (*value == '\'' || *value == '\"')
+			return (*value);
 		value++;
 	}
-	return (string);
+	return (0);
 }
-
 
 void	collect_command(t_parser_var	*var)
 {
@@ -75,25 +46,27 @@ void	collect_command(t_parser_var	*var)
 		if (strchr(var->token->value, '$'))
 			var->token->value = expand_env_variables(var->token->value);
 		variable_reverce_42(var->token->value);
-		find_char_and_replace_with_unprintable(var->token->value);
 		var->command = _join(var->command, var->token->value);
 	}
 }
 
 void	save_file(t_parser_var	*var)
 {
-	if (var->token->e_type == 2 || var->token->e_type == 3
-		|| var->token->e_type == 4)
+	char	*hold;
+
+	if (var->token->e_type != 0 && var->token->e_type != 1)
 	{
-		if (strchr(var->token->value, '$'))
+		if (var->token->e_type != 5 && strchr(var->token->value, '$'))
 		{
 			var->token->value = expand_env_variables(var->token->value);
 			if (variable_contain_42(var->token->value))
 				var->token->e_type = -1;
 		}
-		find_unprintable_and_replace_with_char(var->token->value);
+		hold = skip_quote(var->token->value);
+		free(var->token->value);
+		find_unprintable_and_replace_with_char(hold);
 		ft_lstadd_back_subnode(&(var->file),
-			ft_lstnew_subnode(skip_quote(var->token->value), var->token->e_type));
+			ft_lstnew_subnode(hold, var->token->e_type));
 	}
 }
 
@@ -107,9 +80,6 @@ t_parser_var	*parser(char *input)
 	{
 		collect_command(var);
 		save_file(var);
-		if (var->token->e_type == 5)
-			ft_lstadd_back_subnode(&(var->file),
-				ft_lstnew_subnode(skip_quote(var->token->value), var->token->e_type));
 		if (var->token->e_type == 1 ||!var->lexer->c)
 		{
 			var->_command = split(skip_quote(var->command), ' ');

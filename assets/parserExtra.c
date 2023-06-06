@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:58 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/03 17:34:30 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/06 15:15:19 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,33 @@ char	*skip_white_space(char *input)
 	while (input && ((*input >= 9 && *input <= 13) || *input == 32))
 		input++;
 	return (input);
+}
+
+char	*skip_quote(char *value)
+{
+	char	*tmp;
+	char	*string;
+	int		len;
+	char	quote;
+
+	string = NULL;
+	len = 0;
+	quote = which_quote(value);
+	while (value && *value)
+	{
+		while (*value == quote)
+			value++;
+		tmp = malloc(len + 2);
+		if (string != NULL)
+		{
+			memcpy(tmp, string, len);
+			free(string);
+		}
+		string = tmp;
+		string[len] = *value;
+		string[len + 1] = '\0';
+		len++;
+		value++;
+	}
+	return (string);
 }

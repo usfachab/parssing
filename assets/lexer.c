@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 23:28:44 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/03 23:44:13 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/06 15:14:54 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ char	*lexer_collect_string(t_lexer *lexer)
 
 	string = NULL;
 	lexer_skip_white_space(lexer);
+	if (!lexer->c)
+		return ("NULL");
 	len = 0;
 	while (!identifier(lexer))
 	{
 		tmp = malloc(len + 2);
-		if (!tmp)
-			exit(EXIT_FAILURE);
 		if (string != NULL)
 		{
 			memcpy(tmp, string, len);

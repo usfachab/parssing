@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "parser.h"
@@ -26,6 +27,7 @@ t_parser_var	*parser(char *command);
 int				variable_contain_42(char *value);
 void			variable_reverce_42(char *value);
 char			*skip_white_space(char *input);
+char			*skip_quote(char *value);
 /* ----------------------------- src folder -----------------------------*/
 void			find_char_and_replace_with_unprintable(char *str);
 void			find_unprintable_and_replace_with_char(char *str);
