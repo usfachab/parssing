@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:45 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/06 16:52:04 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/07 15:41:01 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ int	main(void)
 			while (var->data)
 			{
 				int i = 0;
-				// if (var->data->cmd_args[i] == 0)
-				// 	printf("xnxx\n");
 				while (var->data->cmd_args && var->data->cmd_args[i])
 				{
 					printf("command and args:%s\n", var->data->cmd_args[i]);

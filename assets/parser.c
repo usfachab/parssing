@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:48:06 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/06 18:45:40 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/07 22:01:51 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,27 @@ void	save_file(t_parser_var	*var)
 			ft_lstnew_subnode(hold, var->token->e_type));
 	}
 }
+
+// void	find_char_and_replace_with_unprintable(char *str)
+// {
+// 	int	double_quote;
+// 	int	single_quote;
+
+// 	double_quote = 0;
+// 	single_quote = 0;
+// 	while (str && *str)
+// 	{
+// 		if (*str == '"')
+// 			double_quote = !double_quote;
+// 		if (*str == '\'')
+// 			single_quote = !single_quote;
+// 		if ((*str == '"' || *str == '\'') && (double_quote || single_quote))
+// 		{
+			
+// 		}
+// 		str++;
+// 	}
+// }
 
 t_parser_var	*parser(char *input)
 {

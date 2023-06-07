@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:58 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/06 15:18:34 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/07 22:38:36 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,24 @@ char	*skip_quote(char *value)
 	char	*string;
 	int		len;
 	char	quote;
+	int		num_of_quote;
 
+	num_of_quote = 0;
 	string = NULL;
 	len = 0;
 	quote = which_quote(value);
 	while (value && *value)
 	{
-		while (*value == quote)
+		while (*value == quote && quote != '\0')
+		{
+			num_of_quote += 1;
+			if (num_of_quote % 2 == 0 && num_of_quote > 0)
+			{
+				quote = which_quote(value + 1);
+				num_of_quote = 1;
+			}
 			value++;
+		}
 		tmp = malloc(len + 2);
 		if (string != NULL)
 		{
