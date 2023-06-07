@@ -19,6 +19,9 @@ $(NAME)	:	$(OBJ)
 
 %.o		:	%.c
 			@$(CC) $(CFALGS) -o $@ $(SRC) $(LDFLAG)
+
+git		:
+			make fclean && git add . && git commit -m "update: handle skipping quotes" && git push
 clean	:
 			@rm -fr $(OBJ)
 
