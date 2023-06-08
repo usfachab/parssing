@@ -6,21 +6,22 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 20:08:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/07 21:54:02 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/08 02:04:36 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include  "../include/lib.h"
 
-char	*get_env_variable(char *name)
+char	*get_env_variable(char *name, char **env)
 {
-	extern char	**environ;
-	char		**env;
+	//extern char	**environ;
+	
+	// char		**env;
 	size_t		len;
 
 	if (!name)
 		return (NULL);
-	env = environ;
+	// env = environ;
 	len = strlen(name);
 	while (*env != NULL)
 	{
@@ -56,7 +57,9 @@ void	fill_buffer(char *value, t_exp_var *exp)
 	if (*value == '$' && (exp->d__quote
 			|| (!exp->d__quote && !exp->s__quote)))
 	{
-		exp->start = value + 1;
+		while(*value == '$')
+			value += 1;
+		exp->start = value;
 		exp->end = exp->start;
 		while (!is_special_character(*exp->end))
 			exp->end++;
@@ -67,8 +70,9 @@ void	fill_buffer(char *value, t_exp_var *exp)
 	}
 }
 
-void	start_expanding(t_exp_var *exp, char *value)
+void	start_expanding(t_exp_var *exp, char **value)
 {
+	// (void)value;
 	if (exp->variable)
 	{
 		exp->neo_value = malloc(sizeof(char *) * ((strlen(exp->head)
@@ -82,13 +86,14 @@ void	start_expanding(t_exp_var *exp, char *value)
 			+ strlen(exp->variable)] = 0;
 		exp->head = strdup(exp->neo_value);
 		exp->dollarsign = strchr(exp->head, '$');
-		value = exp->dollarsign;
+		if (exp->dollarsign)
+			*value = exp->dollarsign - 1;
 		free(exp->neo_value);
 		exp->variable = NULL;
 	}
 }
 
-char	*expand_env_variables(char *value)
+char	*expand_env_variables(char *value, char **env)
 {
 	t_exp_var	*exp;
 
@@ -100,17 +105,18 @@ char	*expand_env_variables(char *value)
 		if (*value == '\'' && !exp->d__quote)
 			exp->s__quote = !exp->s__quote;
 		fill_buffer(value, exp);
+		// printf("exp->buffer: %s\n", exp->buffer);
 		if (exp->buffer)
 		{
-			exp->variable = get_env_variable(exp->buffer);
+			exp->variable = get_env_variable(exp->buffer, env);
+			if (exp->variable)
 			free(exp->buffer);
 			exp->buffer = NULL;
 		}
 		if (exp->variable && variable_contain_white_space(exp->variable))
 			exp->variable = add_quote_to_variable(exp->variable);
 		if (exp->variable)
-			start_expanding(exp, value);
-		
+			start_expanding(exp, &value);
 		value++;
 	}
 	return (exp->head);

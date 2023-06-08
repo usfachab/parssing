@@ -6,12 +6,18 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:29:07 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/03 17:16:46 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/08 02:30:03 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
+
+typedef struct s_list
+{
+	char			*content;
+	struct s_list	*next;
+}	t_list;
 
 typedef struct FILE_STRUCT
 {
@@ -26,6 +32,11 @@ typedef struct DATA_STRUCT
 	t_file					*file;
 	struct DATA_STRUCT		*next;
 }	t_data;
+
+typedef struct exec_STRUCT
+{
+	t_list	*env;
+}	t_exec;
 
 typedef struct LEXER_STRUCT
 {
@@ -51,6 +62,7 @@ typedef struct TOKEN_STRUCT
 
 typedef struct PARSER_VARIABLES
 {
+	char	**env;
 	t_data	*data;
 	t_lexer	*lexer;
 	t_token	*token;

@@ -19,10 +19,10 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "parser.h"
+# include "glob.h"
 
 /* ----------------------------- parser  --------------------------------*/
-t_parser_var	*parser(char *command);
+t_parser_var	*parser(char *command, char **env);
 /* ----------------------------- parserExtra  ---------------------------*/
 int				variable_contain_42(char *value);
 void			variable_reverce_42(char *value);
@@ -49,9 +49,9 @@ t_token			*lexer_get_next_token(t_lexer *lexer);
 t_token			*lexer_collect_identifier(t_lexer *lexer);
 t_token			*lexer_advence_with_token(t_lexer *lexer, t_token *token);
 t_token			*init_token(int type, char *value);
-char			*lexer_collect_heredoc(t_lexer *lexer);
+// char			*lexer_collect_heredoc(t_lexer *lexer);
 /* ---------------------------- expand ----------------------------------*/
-char			*expand_env_variables(char *command);
+char			*expand_env_variables(char *command, char **env);
 int				variable_contain_white_space(char *variable);
 /* ---------------------------- syntax ----------------------------------*/
 void			*syntax_err(char *input);
@@ -67,4 +67,6 @@ void			lexer_skip_white_space(t_lexer *lexer);
 /* ---------------------------- nodeListExtra ---------------------------*/
 void			*ft_lstlast_subnode(t_file *lst);
 void			*ft_lstlast_node(t_data *lst);
+/* ---------------------------- ExitStat --------------------------------*/
+void			exxit(char *str, int num);
 #endif

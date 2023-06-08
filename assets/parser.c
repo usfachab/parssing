@@ -6,19 +6,20 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:48:06 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/07 22:01:51 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/08 02:03:23 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/lib.h"
 
-t_parser_var	*init_var(char *input)
+static t_parser_var	*init_var(char *input, char **env)
 {
 	t_parser_var	*var;
 
 	var = malloc(sizeof(t_parser_var));
 	if (!var)
 		exit(1);
+	var->env = env;
 	var->data = NULL;
 	var->lexer = init_lexer(input);
 	var->token = lexer_get_next_token(var->lexer);
@@ -32,8 +33,9 @@ void	collect_command(t_parser_var	*var)
 {
 	if (var->token->e_type == 0)
 	{
+		find_unprintable_and_replace_with_char(var->token->value);
 		if (strchr(var->token->value, '$'))
-			var->token->value = expand_env_variables(var->token->value);
+			var->token->value = expand_env_variables(var->token->value, var->env);
 		variable_reverce_42(var->token->value);
 		var->command = _join(var->command, var->token->value);
 	}
@@ -46,7 +48,7 @@ void	save_file(t_parser_var	*var)
 	{
 		if (strchr(var->token->value, '$'))
 		{
-			var->token->value = expand_env_variables(var->token->value);
+			var->token->value = expand_env_variables(var->token->value, var->env);
 			if (variable_contain_42(var->token->value))
 				var->token->e_type = -1;
 		}
@@ -58,33 +60,12 @@ void	save_file(t_parser_var	*var)
 	}
 }
 
-// void	find_char_and_replace_with_unprintable(char *str)
-// {
-// 	int	double_quote;
-// 	int	single_quote;
-
-// 	double_quote = 0;
-// 	single_quote = 0;
-// 	while (str && *str)
-// 	{
-// 		if (*str == '"')
-// 			double_quote = !double_quote;
-// 		if (*str == '\'')
-// 			single_quote = !single_quote;
-// 		if ((*str == '"' || *str == '\'') && (double_quote || single_quote))
-// 		{
-			
-// 		}
-// 		str++;
-// 	}
-// }
-
-t_parser_var	*parser(char *input)
+t_parser_var	*parser(char *input, char **env)
 {
 	t_parser_var	*var;
 
 	find_char_and_replace_with_unprintable(input);
-	var = init_var(input);
+	var = init_var(input, env);
 	while (var->token)
 	{
 		collect_command(var);

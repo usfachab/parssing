@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:58 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/07 22:38:36 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/08 01:39:41 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ char	*skip_quote(char *value)
 		string[len] = *value;
 		string[len + 1] = '\0';
 		len++;
+		if (*value == '\0')
+			return (string);
 		value++;
 	}
 	return (string);
