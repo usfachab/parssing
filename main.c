@@ -36,9 +36,6 @@ int	main(int argc, char *argv[], char *env[])
 }
 
 
-
-
-
 			// while (var->data)
 			// {
 			// 	int i = 0;
