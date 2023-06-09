@@ -1,12 +1,12 @@
 NAME	=	lexer
 
-CC		=	gcc
+CC		=	cc
 
-CFALGS	=	-Wextra -Werror -Wall -fsanitize=address -g3
+CFALGS	=	-Wextra -Werror -Wall
 
-LDFLAG	=	-lreadline -I/Users/yachaab/.brew/Cellar/readline/8.2.1/lib/ -L/Users/yachaab/.brew/Cellar/readline/8.2.1/lib/
+LDFLAG	=	-lreadline
 
-SRC		=	main.c assets/exitStat.c assets/lexer.c assets/parser.c assets/parserExtra.c assets/syntax.c assets/__syntax.c \
+SRC		=	main.c reset.c assets/exitStat.c assets/lexer.c assets/parser.c assets/parserExtra.c assets/syntax.c assets/__syntax.c \
 			assets/expand.c assets/extra.c assets/token.c helper/find_and_replace.c helper/ft_split.c \
 			helper/ft_strjoin.c helper/node_list.c helper/nodeListExtra.c
 
@@ -21,7 +21,7 @@ $(NAME)	:	$(OBJ)
 			@$(CC) $(CFALGS) -o $@ $(SRC) $(LDFLAG)
 
 git		:
-			make fclean && git add . && git commit -m "update: handle skipping quotes, expand problem solved add glob struct" && git push
+			make fclean && git add . && git commit -m "update: handle free but still problem in expand more than one variable" && git push
 clean	:
 			@rm -fr $(OBJ)
 

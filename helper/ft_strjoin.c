@@ -40,6 +40,7 @@ char	*_join(char *path, char *cmd)
 		i++;
 	}
 	ptr[i] = 0;
+	free(path);
 	j = 0;
 	while (j < ft_strlen(cmd))
 	{
@@ -48,5 +49,6 @@ char	*_join(char *path, char *cmd)
 	}
 	ptr[i + j] = ' ';
 	ptr[i + j + 1] = 0;
+	free(cmd);
 	return (ptr);
 }

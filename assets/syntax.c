@@ -69,6 +69,7 @@ void	*pipe_err(char *input)
 
 void	*syntax_err(char *input)
 {	
+	find_char_and_replace_with_unprintable(input);
 	if (!unclosed_quote(input))
 		return (NULL);
 	if (!pipe_err(input))

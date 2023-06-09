@@ -31,11 +31,17 @@ static t_parser_var	*init_var(char *input, char **env)
 
 void	collect_command(t_parser_var	*var)
 {
+
 	if (var->token->e_type == 0)
 	{
+		char	*expand;
 		find_unprintable_and_replace_with_char(var->token->value);
 		if (strchr(var->token->value, '$'))
-			var->token->value = expand_env_variables(var->token->value, var->env);
+		{
+			expand = expand_env_variables(var->token->value, var->env);
+			free(var->token->value);
+			var->token->value = strdup(expand);
+		}
 		variable_reverce_42(var->token->value);
 		var->command = _join(var->command, var->token->value);
 	}
@@ -43,12 +49,16 @@ void	collect_command(t_parser_var	*var)
 
 void	save_file(t_parser_var	*var)
 {
-	char	*hold;
+
 	if (var->token->e_type != 0 && var->token->e_type != 1 && var->token->e_type != 5)
 	{
+		char	*hold;
+		char	*expand;
 		if (strchr(var->token->value, '$'))
 		{
-			var->token->value = expand_env_variables(var->token->value, var->env);
+			expand = expand_env_variables(var->token->value, var->env);
+			free(var->token->value);
+			var->token->value = strdup(expand);
 			if (variable_contain_42(var->token->value))
 				var->token->e_type = -1;
 		}
@@ -63,6 +73,7 @@ void	save_file(t_parser_var	*var)
 t_parser_var	*parser(char *input, char **env)
 {
 	t_parser_var	*var;
+	char			*skipped;
 
 	find_char_and_replace_with_unprintable(input);
 	var = init_var(input, env);
@@ -78,15 +89,20 @@ t_parser_var	*parser(char *input, char **env)
 		}
 		if (var->token->e_type == 1 ||!var->lexer->c)
 		{
+			if (var->lexer->c)
+				free(var->token->value);
 			find_char_and_replace_with_unprintable(var->command);
-			var->_command = split(skip_quote(var->command), ' ');
+			skipped = skip_quote(var->command);
+			free(var->command);
+			var->_command = split(skipped, ' ');
+			free(skipped);
 			find_unprintable_replace_space(var->_command);
 			ft_lstadd_back_node(&(var->data),
 				ft_lstnew_node(var->_command, var->file));
-			free(var->command);
 			var->command = strdup("");
 			var->file = NULL;
 		}
+		free(var->token);
 		var->token = lexer_get_next_token(var->lexer);
 	}
 	return (var);

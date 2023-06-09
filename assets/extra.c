@@ -57,6 +57,7 @@ char	*add_quote_to_variable(char *value)
 	}
 	new_val[i + 1] = '\"';
 	new_val[i + 2] = '\0';
+	free(value);
 	return (new_val);
 }
 

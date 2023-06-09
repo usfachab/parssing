@@ -10,25 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// while (var->data)
-// 			{
-// 				int i = 0;
-// 				while (var->data->cmd_args && var->data->cmd_args[i])
-// 				{
-// 					free(var->data->cmd_args[i]);
-// 					i++;
-// 				}
-// 				while (var->data && var->data->file)
-// 				{
-// 					free(var->data->file->file_name);
-// 					var->data->file = var->data->file->next;
-// 				}
-// 				var->data = var->data->next;
-// 			}
-// 			free(var->command);
-// 			free(var->file);
-// 			free(var->_command);
-// 			free(var->lexer);
-// 			free(var->token);
-// 			free(var->data);
-// 			free(var);
+#include "include/lib.h"
+
+void reset(t_parser_var *var)
+{
+	int i;
+	while (var->data)
+	{
+		i = 0;
+		while (var->data->cmd_args && var->data->cmd_args[i])
+		{
+			free(var->data->cmd_args[i]);
+			i++;
+		}
+		while (var->data && var->data->file)
+		{
+			t_file	*file_next = var->data->file->next;
+			free(var->data->file->file_name);
+			free(var->data->file);
+			var->data->file = file_next;
+		}
+		t_data *data_next = var->data->next;
+		free(var->data->cmd_args);
+		free(var->data);
+		var->data = data_next;
+	}
+	free(var->command);
+	free(var->file);
+	free(var->lexer);
+	free(var->token);
+	free(var->data);
+	free(var);
+}

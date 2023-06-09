@@ -69,4 +69,6 @@ void			*ft_lstlast_subnode(t_file *lst);
 void			*ft_lstlast_node(t_data *lst);
 /* ---------------------------- ExitStat --------------------------------*/
 void			exxit(char *str, int num);
+
+void			reset(t_parser_var *var);
 #endif

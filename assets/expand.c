@@ -14,14 +14,10 @@
 
 char	*get_env_variable(char *name, char **env)
 {
-	//extern char	**environ;
-	
-	// char		**env;
 	size_t		len;
 
 	if (!name)
 		return (NULL);
-	// env = environ;
 	len = strlen(name);
 	while (*env != NULL)
 	{
@@ -29,7 +25,7 @@ char	*get_env_variable(char *name, char **env)
 			return (&(*env)[len + 1]);
 		env++;
 	}
-	return (strdup(""));
+	return ("\0");
 }
 
 t_exp_var	*init_exp_var(char *value)
@@ -58,11 +54,11 @@ void	fill_buffer(char *value, t_exp_var *exp)
 			|| (!exp->d__quote && !exp->s__quote)))
 	{
 		while(*value == '$')
-			value += 1;
+			value++;
 		exp->start = value;
 		exp->end = exp->start;
 		while (!is_special_character(*exp->end))
-			exp->end++;
+			exp->end++;	
 		exp->length = exp->end - exp->start;
 		exp->buffer = malloc(exp->length + 1);
 		memcpy(exp->buffer, exp->start, exp->length);
@@ -72,26 +68,28 @@ void	fill_buffer(char *value, t_exp_var *exp)
 
 void	start_expanding(t_exp_var *exp, char **value)
 {
-	// (void)value;
-	if (exp->variable)
-	{
-		exp->neo_value = malloc(sizeof(char *) * ((strlen(exp->head)
-						- (exp->length + 1)) + strlen(exp->variable)));
-		memcpy(exp->neo_value, exp->head, exp->start - exp->head);
-		memcpy(exp->neo_value + (exp->start - exp->head - 1),
-			exp->variable, strlen(exp->variable));
-		memcpy(exp->neo_value + ((exp->start - exp->head - 1)
-				+ strlen(exp->variable)), exp->end, strlen(exp->end));
-		exp->neo_value[(strlen(exp->head) - (exp->length + 1))
-			+ strlen(exp->variable)] = 0;
-		exp->head = strdup(exp->neo_value);
-		exp->dollarsign = strchr(exp->head, '$');
-		if (exp->dollarsign)
-			*value = exp->dollarsign - 1;
-		free(exp->neo_value);
-		exp->variable = NULL;
-	}
+	exp->neo_value = malloc(sizeof(char *) * ((strlen(exp->head)
+					- (exp->length + 1)) + strlen(exp->variable)));
+	memcpy(exp->neo_value, exp->head, exp->start - exp->head);
+	memcpy(exp->neo_value + (exp->start - exp->head - 1),
+		exp->variable, strlen(exp->variable));
+	memcpy(exp->neo_value + ((exp->start - exp->head - 1)
+			+ strlen(exp->variable)), exp->end, strlen(exp->end));
+	exp->neo_value[(strlen(exp->head) - (exp->length + 1))
+		+ strlen(exp->variable)] = 0;
+	free(exp->head);
+	exp->head = strdup(exp->neo_value);
+	free(exp->neo_value);
+	exp->dollarsign = strchr(exp->head, '$');
+	if (exp->dollarsign)
+		*value = exp->dollarsign - 2;
+	exp->variable = NULL;
 }
+
+// void	ex_free(t_exp_var *var)
+// {
+	
+// }
 
 char	*expand_env_variables(char *value, char **env)
 {
@@ -105,11 +103,9 @@ char	*expand_env_variables(char *value, char **env)
 		if (*value == '\'' && !exp->d__quote)
 			exp->s__quote = !exp->s__quote;
 		fill_buffer(value, exp);
-		// printf("exp->buffer: %s\n", exp->buffer);
 		if (exp->buffer)
 		{
 			exp->variable = get_env_variable(exp->buffer, env);
-			if (exp->variable)
 			free(exp->buffer);
 			exp->buffer = NULL;
 		}
@@ -117,7 +113,13 @@ char	*expand_env_variables(char *value, char **env)
 			exp->variable = add_quote_to_variable(exp->variable);
 		if (exp->variable)
 			start_expanding(exp, &value);
+		if (exp->variable && !exp->variable[0])
+			free(exp->variable);
 		value++;
 	}
-	return (exp->head);
+	value = exp->head;
+	//free(exp->variable);
+	free(exp);
+	return (value);
 }
+
