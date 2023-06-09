@@ -34,16 +34,12 @@ void	collect_command(t_parser_var	*var)
 
 	if (var->token->e_type == 0)
 	{
-		char	*expand;
 		find_unprintable_and_replace_with_char(var->token->value);
 		if (strchr(var->token->value, '$'))
-		{
-			expand = expand_env_variables(var->token->value, var->env);
-			free(var->token->value);
-			var->token->value = strdup(expand);
-		}
+			var->token->value = expand_env_variables(var->token->value, var->env);
 		variable_reverce_42(var->token->value);
 		var->command = _join(var->command, var->token->value);
+		free(var->token->value);
 	}
 }
 
@@ -52,21 +48,22 @@ void	save_file(t_parser_var	*var)
 
 	if (var->token->e_type != 0 && var->token->e_type != 1 && var->token->e_type != 5)
 	{
-		char	*hold;
-		char	*expand;
+		char	*hold = NULL;
 		if (strchr(var->token->value, '$'))
 		{
-			expand = expand_env_variables(var->token->value, var->env);
-			free(var->token->value);
-			var->token->value = strdup(expand);
+			var->token->value = expand_env_variables(var->token->value, var->env);
 			if (variable_contain_42(var->token->value))
 				var->token->e_type = -1;
 		}
-		hold = skip_quote(var->token->value);
-		free(var->token->value);
-		find_unprintable_and_replace_with_char(hold);
+		if (strchr(var->token->value, '\'') || strchr(var->token->value, '\"'))
+		{
+			hold = skip_quote(var->token->value);
+			free(var->token->value);
+			var->token->value = hold;
+		}
+		find_unprintable_and_replace_with_char(var->token->value);
 		ft_lstadd_back_subnode(&(var->file),
-			ft_lstnew_subnode(hold, var->token->e_type));
+			ft_lstnew_subnode(var->token->value, var->token->e_type));
 	}
 }
 
@@ -93,16 +90,17 @@ t_parser_var	*parser(char *input, char **env)
 				free(var->token->value);
 			find_char_and_replace_with_unprintable(var->command);
 			skipped = skip_quote(var->command);
-			free(var->command);
 			var->_command = split(skipped, ' ');
 			free(skipped);
 			find_unprintable_replace_space(var->_command);
 			ft_lstadd_back_node(&(var->data),
 				ft_lstnew_node(var->_command, var->file));
+			free(var->command);
 			var->command = strdup("");
 			var->file = NULL;
 		}
 		free(var->token);
+
 		var->token = lexer_get_next_token(var->lexer);
 	}
 	return (var);

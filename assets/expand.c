@@ -86,11 +86,6 @@ void	start_expanding(t_exp_var *exp, char **value)
 	exp->variable = NULL;
 }
 
-// void	ex_free(t_exp_var *var)
-// {
-	
-// }
-
 char	*expand_env_variables(char *value, char **env)
 {
 	t_exp_var	*exp;
@@ -118,7 +113,6 @@ char	*expand_env_variables(char *value, char **env)
 		value++;
 	}
 	value = exp->head;
-	//free(exp->variable);
 	free(exp);
 	return (value);
 }

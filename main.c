@@ -11,6 +11,20 @@
 /* ************************************************************************** */
 
 #include "include/lib.h"
+
+void	sighandler(int sig)
+{
+	if(sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else 
+		return;
+}
+
 int	main(int argc, char *argv[], char *env[])
 {
 	(void)argc;(void)argv;
@@ -18,6 +32,7 @@ int	main(int argc, char *argv[], char *env[])
 	t_parser_var	*var;
 
 	var = NULL;
+	signal(SIGINT,sighandler);
 	while (SIGQUIT)
 	{
 		input = readline("minishell -> ");
@@ -27,13 +42,14 @@ int	main(int argc, char *argv[], char *env[])
 		if (syntax_err(input))
 		{
 			var = parser(input, env);
-
 		}
 		reset(var);
 		free(input);
 	}
 	return (0);
 }
+
+
 
 
 			// while (var->data)
@@ -53,8 +69,6 @@ int	main(int argc, char *argv[], char *env[])
 			// 	printf("------------ next command ----------\n");
 			// 	var->data = var->data->next;
 			// }
-
-
 
 
 

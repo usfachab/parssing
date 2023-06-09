@@ -51,7 +51,7 @@ char	*lexer_collect_string(t_lexer *lexer)
 	string = NULL;
 	lexer_skip_white_space(lexer);
 	if (!lexer->c)
-		return ("NULL");
+		return (strdup("NULL"));
 	len = 0;
 	while (!identifier(lexer))
 	{

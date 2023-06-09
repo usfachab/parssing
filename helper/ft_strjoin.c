@@ -49,6 +49,5 @@ char	*_join(char *path, char *cmd)
 	}
 	ptr[i + j] = ' ';
 	ptr[i + j + 1] = 0;
-	free(cmd);
 	return (ptr);
 }

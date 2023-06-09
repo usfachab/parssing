@@ -15,30 +15,33 @@
 void reset(t_parser_var *var)
 {
 	int i;
-	while (var->data)
+	if (var)
 	{
-		i = 0;
-		while (var->data->cmd_args && var->data->cmd_args[i])
+		while (var->data)
 		{
-			free(var->data->cmd_args[i]);
-			i++;
+			i = 0;
+			while (var->data->cmd_args && var->data->cmd_args[i])
+			{
+				free(var->data->cmd_args[i]);
+				i++;
+			}
+			while (var->data && var->data->file)
+			{
+				t_file	*file_next = var->data->file->next;
+				free(var->data->file->file_name);
+				free(var->data->file);
+				var->data->file = file_next;
+			}
+			t_data *data_next = var->data->next;
+			free(var->data->cmd_args);
+			free(var->data);
+			var->data = data_next;
 		}
-		while (var->data && var->data->file)
-		{
-			t_file	*file_next = var->data->file->next;
-			free(var->data->file->file_name);
-			free(var->data->file);
-			var->data->file = file_next;
-		}
-		t_data *data_next = var->data->next;
-		free(var->data->cmd_args);
+		free(var->command);
+		free(var->file);
+		free(var->lexer);
+		free(var->token);
 		free(var->data);
-		var->data = data_next;
+		free(var);
 	}
-	free(var->command);
-	free(var->file);
-	free(var->lexer);
-	free(var->token);
-	free(var->data);
-	free(var);
 }
