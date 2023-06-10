@@ -67,6 +67,16 @@ void	*pipe_err(char *input)
 	return ("OK");
 }
 
+void	*white_space_only(char *input)
+{
+	while (input && ((*input >= 9 && *input <= 13) || *input == 32))
+		input++;
+	if (*input == '\0')
+		return (NULL);
+	else
+		return ("OK");
+}
+
 void	*syntax_err(char *input)
 {	
 	find_char_and_replace_with_unprintable(input);
@@ -75,6 +85,8 @@ void	*syntax_err(char *input)
 	if (!pipe_err(input))
 		return (NULL);
 	if (!redirection_error(input))
+		return (NULL);
+	if (!white_space_only(input))
 		return (NULL);
 	return ("OK");
 }

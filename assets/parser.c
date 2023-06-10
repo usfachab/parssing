@@ -34,9 +34,14 @@ void	collect_command(t_parser_var	*var)
 
 	if (var->token->e_type == 0)
 	{
+		char	*exp = NULL;
 		find_unprintable_and_replace_with_char(var->token->value);
 		if (strchr(var->token->value, '$'))
-			var->token->value = expand_env_variables(var->token->value, var->env);
+		{
+			exp = expand_env_variables(var->token->value, var->env);
+			free(var->token->value);
+			var->token->value = exp;
+		}
 		variable_reverce_42(var->token->value);
 		var->command = _join(var->command, var->token->value);
 		free(var->token->value);
@@ -48,10 +53,13 @@ void	save_file(t_parser_var	*var)
 
 	if (var->token->e_type != 0 && var->token->e_type != 1 && var->token->e_type != 5)
 	{
+		char	*exp = NULL;
 		char	*hold = NULL;
 		if (strchr(var->token->value, '$'))
 		{
-			var->token->value = expand_env_variables(var->token->value, var->env);
+			exp = expand_env_variables(var->token->value, var->env);
+			free(var->token->value);
+			var->token->value = exp;
 			if (variable_contain_42(var->token->value))
 				var->token->e_type = -1;
 		}

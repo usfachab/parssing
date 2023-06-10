@@ -10,8 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #ifndef PARSER_H
 # define PARSER_H
+
+typedef struct GLOB_STRUCT
+{
+	// t_data	*data;
+	// t_list	*env;
+	char	*exit_status;
+} t_glob;
 
 typedef struct s_list
 {
@@ -73,6 +81,7 @@ typedef struct PARSER_VARIABLES
 
 typedef struct EXPAND_VARIABLES
 {
+	t_glob	*global;
 	char	*neo_value;
 	char	*start;
 	char	*end;
@@ -83,6 +92,7 @@ typedef struct EXPAND_VARIABLES
 	size_t	length;
 	int		d__quote;
 	int		s__quote;
+	int		stat_flag;
 }	t_exp_var;
 
 #endif

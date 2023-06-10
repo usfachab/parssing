@@ -19,7 +19,8 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "glob.h"
+# include <termios.h>
+# include "parser.h"
 
 /* ----------------------------- parser  --------------------------------*/
 t_parser_var	*parser(char *command, char **env);

@@ -12,15 +12,24 @@
 
 #include "include/lib.h"
 
+void disable_echo_int() {
+    struct termios term;
+    tcgetattr(STDIN_FILENO, &term);
+    term.c_lflag &= ~ECHOCTL;
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
 void	sighandler(int sig)
 {
 	if(sig == SIGINT)
 	{
-		write(1, "\n", 1);
+		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	if (sig == SIGQUIT)
+		rl_redisplay();
 	else 
 		return;
 }
@@ -30,20 +39,42 @@ int	main(int argc, char *argv[], char *env[])
 	(void)argc;(void)argv;
 	char			*input;
 	t_parser_var	*var;
+	t_glob			*glob;
 
+	glob = malloc(sizeof(t_glob));
+	glob->exit_status = "0";
 	var = NULL;
 	signal(SIGINT,sighandler);
-	while (SIGQUIT)
+	signal(SIGQUIT,sighandler);
+	disable_echo_int();
+	while (13)
 	{
 		input = readline("minishell -> ");
 		if (!input || !strcmp(input, "exit"))
 			exxit("exit", 0);
 		add_history(input);
-		if (syntax_err(input))
+		if (*input && syntax_err(input))
 		{
 			var = parser(input, env);
+			while (var->data)
+			{
+				int i = 0;
+				while (var->data->cmd_args && var->data->cmd_args[i])
+				{
+					printf("command and args:%s\n", var->data->cmd_args[i]);
+					i++;
+				}
+				while (var->data && var->data->file)
+				{
+					printf("file_name: %s | file_type: %d\n",
+					var->data->file->file_name, var->data->file->type);
+					var->data->file = var->data->file->next;
+				}
+				printf("------------ next command ----------\n");
+				var->data = var->data->next;
+			}
+			reset(var);
 		}
-		reset(var);
 		free(input);
 	}
 	return (0);
@@ -52,23 +83,6 @@ int	main(int argc, char *argv[], char *env[])
 
 
 
-			// while (var->data)
-			// {
-			// 	int i = 0;
-			// 	while (var->data->cmd_args && var->data->cmd_args[i])
-			// 	{
-			// 		printf("command and args:%s\n", var->data->cmd_args[i]);
-			// 		i++;
-			// 	}
-			// 	while (var->data && var->data->file)
-			// 	{
-			// 		printf("file_name: %s | file_type: %d\n",
-			// 		var->data->file->file_name, var->data->file->type);
-			// 		var->data->file = var->data->file->next;
-			// 	}
-			// 	printf("------------ next command ----------\n");
-			// 	var->data = var->data->next;
-			// }
 
 
 

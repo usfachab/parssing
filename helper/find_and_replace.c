@@ -12,6 +12,18 @@
 
 #include "../include/lib.h"
 
+char	which_white_space(char ch)
+{
+	char	*found_char;
+	char	*special_char;
+
+	special_char = " \t\n\f\v\r";
+	found_char = strchr(special_char, ch);
+	if (found_char)
+		return (*found_char);
+	return (0);
+}
+
 void	find_char_and_replace_with_unprintable(char *str)
 {
 	int	double_quote;
@@ -33,7 +45,7 @@ void	find_char_and_replace_with_unprintable(char *str)
 				*str = -2;
 			if (*str == '>')
 				*str = -3;
-			if (*str == ' ')
+			if (*str == which_white_space(*str))
 				*str = -4;
 		}
 		str++;

@@ -45,6 +45,7 @@ t_exp_var	*init_exp_var(char *value)
 	exp->length = 0;
 	exp->d__quote = 0;
 	exp->s__quote = 0;
+	exp->stat_flag = 0;
 	return (exp);
 }
 
@@ -54,11 +55,16 @@ void	fill_buffer(char *value, t_exp_var *exp)
 			|| (!exp->d__quote && !exp->s__quote)))
 	{
 		while(*value == '$')
+		{
+			if (*value == '?')
+				exp->stat_flag = 1;
 			value++;
+
+		}
 		exp->start = value;
 		exp->end = exp->start;
 		while (!is_special_character(*exp->end))
-			exp->end++;	
+			exp->end++;
 		exp->length = exp->end - exp->start;
 		exp->buffer = malloc(exp->length + 1);
 		memcpy(exp->buffer, exp->start, exp->length);
@@ -77,9 +83,9 @@ void	start_expanding(t_exp_var *exp, char **value)
 			+ strlen(exp->variable)), exp->end, strlen(exp->end));
 	exp->neo_value[(strlen(exp->head) - (exp->length + 1))
 		+ strlen(exp->variable)] = 0;
-	free(exp->head);
 	exp->head = strdup(exp->neo_value);
 	free(exp->neo_value);
+	exp->neo_value = NULL;
 	exp->dollarsign = strchr(exp->head, '$');
 	if (exp->dollarsign)
 		*value = exp->dollarsign - 2;
@@ -98,18 +104,22 @@ char	*expand_env_variables(char *value, char **env)
 		if (*value == '\'' && !exp->d__quote)
 			exp->s__quote = !exp->s__quote;
 		fill_buffer(value, exp);
-		if (exp->buffer)
+		if (exp->buffer || exp->stat_flag)
 		{
-			exp->variable = get_env_variable(exp->buffer, env);
+			if (exp->stat_flag)
+				exp->variable = exp->global->exit_status;
+			else
+				exp->variable = get_env_variable(exp->buffer, env);
 			free(exp->buffer);
 			exp->buffer = NULL;
+			exp->stat_flag = 0;
 		}
 		if (exp->variable && variable_contain_white_space(exp->variable))
 			exp->variable = add_quote_to_variable(exp->variable);
 		if (exp->variable)
 			start_expanding(exp, &value);
-		if (exp->variable && !exp->variable[0])
-			free(exp->variable);
+		// if (exp->variable && !exp->variable[0])
+		// 	free(exp->variable);
 		value++;
 	}
 	value = exp->head;

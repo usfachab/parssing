@@ -12,13 +12,11 @@
 
 #ifndef GLOB_H
 # define GLOB_H
-# include "parser.h"
-
 
 typedef struct GLOB_STRUCT
 {
 	t_data	*data;
 	t_list	*env;
-	int		STATE;
+	char	*exit_status;
 } t_glob;
 #endif

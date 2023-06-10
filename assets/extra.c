@@ -29,7 +29,7 @@ int	is_special_character(char ch)
 {
 	char	*special_char;
 
-	special_char = " \t\n\"\'$.-+|,!@#$%^&*(){}:;\\/?><~";
+	special_char = " \t\n\f\v\r\b\"\'\\`~!@#$%^&*()_-=+[]{};:/?.>,<";
 	if (strchr(special_char, ch))
 		return (1);
 	return (0);
