@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 13:38:06 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/08 00:08:30 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/14 15:44:11 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,6 @@ void	*pipe_err(char *input)
 	if (!double_identifier(input, '|'))
 		return (NULL);
 	return ("OK");
-}
-
-void	*white_space_only(char *input)
-{
-	while (input && ((*input >= 9 && *input <= 13) || *input == 32))
-		input++;
-	if (*input == '\0')
-		return (NULL);
-	else
-		return ("OK");
 }
 
 void	*syntax_err(char *input)

@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:58 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/08 01:39:41 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/14 15:38:47 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,54 +40,32 @@ char	*skip_white_space(char *input)
 	return (input);
 }
 
-static char	which_quote(char *value)
+void	save_file(t_parser_var	*var)
 {
-	while (value && *value)
+	char	*hold;
+
+	hold = NULL;
+	if (var->token->e_type != 0 && var->token->e_type != 1
+		&& var->token->e_type != 5)
 	{
-		if (*value == '\'' || *value == '\"')
-			return (*value);
-		value++;
+		if (strchr(var->token->value, '$'))
+			expand_in_save_file(var);
+		if (strchr(var->token->value, '\'') || strchr(var->token->value, '\"'))
+			var->token->value = remove_quote(var);
+		find_unprintable_and_replace_with_char(var->token->value);
+		ft_lstadd_back_subnode(&(var->file),
+			ft_lstnew_subnode(var->token->value, var->token->e_type));
 	}
-	return (0);
 }
 
-char	*skip_quote(char *value)
+void	save_heredoc(t_parser_var *var)
 {
-	char	*tmp;
-	char	*string;
-	int		len;
-	char	quote;
-	int		num_of_quote;
-
-	num_of_quote = 0;
-	string = NULL;
-	len = 0;
-	quote = which_quote(value);
-	while (value && *value)
+	if (var->token->e_type == 5)
 	{
-		while (*value == quote && quote != '\0')
-		{
-			num_of_quote += 1;
-			if (num_of_quote % 2 == 0 && num_of_quote > 0)
-			{
-				quote = which_quote(value + 1);
-				num_of_quote = 1;
-			}
-			value++;
-		}
-		tmp = malloc(len + 2);
-		if (string != NULL)
-		{
-			memcpy(tmp, string, len);
-			free(string);
-		}
-		string = tmp;
-		string[len] = *value;
-		string[len + 1] = '\0';
-		len++;
-		if (*value == '\0')
-			return (string);
-		value++;
+		if (strchr(var->token->value, '\'') || strchr(var->token->value, '\"'))
+			var->token->value = remove_quote(var);
+		find_unprintable_and_replace_with_char(var->token->value);
+		ft_lstadd_back_subnode(&(var->file),
+			ft_lstnew_subnode(var->token->value, var->token->e_type));
 	}
-	return (string);
 }

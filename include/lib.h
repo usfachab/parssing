@@ -21,14 +21,17 @@
 # include <readline/history.h>
 # include <termios.h>
 # include "parser.h"
-
 /* ----------------------------- parser  --------------------------------*/
 t_parser_var	*parser(char *command, char **env);
 /* ----------------------------- parserExtra  ---------------------------*/
 int				variable_contain_42(char *value);
 void			variable_reverce_42(char *value);
 char			*skip_white_space(char *input);
-char			*skip_quote(char *value);
+char			*skip_quote(char *value, t_skip_quote *skip);
+char			*get_env_variable(char *buffer, char **env);
+void			save_file(t_parser_var	*var);
+void			save_heredoc(t_parser_var *var);
+void			expand_in_save_file(t_parser_var *var);
 /* ----------------------------- src folder -----------------------------*/
 void			find_char_and_replace_with_unprintable(char *str);
 void			find_unprintable_and_replace_with_char(char *str);
@@ -50,15 +53,16 @@ t_token			*lexer_get_next_token(t_lexer *lexer);
 t_token			*lexer_collect_identifier(t_lexer *lexer);
 t_token			*lexer_advence_with_token(t_lexer *lexer, t_token *token);
 t_token			*init_token(int type, char *value);
-// char			*lexer_collect_heredoc(t_lexer *lexer);
 /* ---------------------------- expand ----------------------------------*/
 char			*expand_env_variables(char *command, char **env);
 int				variable_contain_white_space(char *variable);
+char			*read_buffer(t_exp_var *exp, char *value, char **env);
 /* ---------------------------- syntax ----------------------------------*/
 void			*syntax_err(char *input);
 void			*redirection_error(char *input);
 void			*unclosed_quote(char *input);
 char			*skip_white_space(char *input);
+void			*white_space_only(char *input);
 /* ---------------------------- extra -----------------------------------*/
 int				_white_space(char c);
 int				is_special_character(char ch);
@@ -69,7 +73,9 @@ void			lexer_skip_white_space(t_lexer *lexer);
 void			*ft_lstlast_subnode(t_file *lst);
 void			*ft_lstlast_node(t_data *lst);
 /* ---------------------------- ExitStat --------------------------------*/
-void			exxit(char *str, int num);
-
 void			reset(t_parser_var *var);
+/* ---------------------------- SkipQuote --------------------------------*/
+char			which_quote(char *value);
+char			*remove_quote(t_parser_var *var);
+t_skip_quote	*init_skip_quote(char *value);
 #endif

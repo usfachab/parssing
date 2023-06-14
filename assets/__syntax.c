@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 15:51:16 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/03 17:32:57 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/14 15:02:04 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*unclosed_quote(char *input)
 	i = 0;
 	while (input && input[i])
 	{
-		if (input[i] == '\'' || input[i] == '"')
+		if (input[i] == '\'' || input[i] == '\"')
 		{
 			quote = input[i];
 			i++;

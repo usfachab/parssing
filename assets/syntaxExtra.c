@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   glob.h                                             :+:      :+:    :+:   */
+/*   syntaxExtra.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/07 22:49:03 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/08 02:37:51 by yachaab          ###   ########.fr       */
+/*   Created: 2023/06/14 15:44:16 by yachaab           #+#    #+#             */
+/*   Updated: 2023/06/14 15:44:32 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GLOB_H
-# define GLOB_H
+#include "../include/lib.h"
 
-typedef struct GLOB_STRUCT
+void	*white_space_only(char *input)
 {
-	t_data	*data;
-	t_list	*env;
-	char	*exit_status;
-} t_glob;
-#endif
+	while (input && ((*input >= 9 && *input <= 13) || *input == 32))
+		input++;
+	if (*input == '\0')
+		return (NULL);
+	else
+		return ("OK");
+}
