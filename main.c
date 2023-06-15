@@ -6,7 +6,7 @@
 /*   By: yachaab <yachaab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:45 by yachaab           #+#    #+#             */
-/*   Updated: 2023/06/14 15:49:21 by yachaab          ###   ########.fr       */
+/*   Updated: 2023/06/15 21:38:02 by yachaab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,23 @@ int	main(int argc, char *argv[], char *env[])
 		if (*input && syntax_err(input))
 		{
 			var = parser(input, env);
-			while (var->data)
-			{
-				int i = 0;
-				while (var->data->cmd_args && var->data->cmd_args[i])
-				{
-					printf("command and args:%s\n", var->data->cmd_args[i]);
-					i++;
-				}
-				while (var->data && var->data->file)
-				{
-					printf("file_name: %s | file_type: %d\n",
-					var->data->file->file_name, var->data->file->type);
-					var->data->file = var->data->file->next;
-				}
-				printf("------------ next command ----------\n");
-				var->data = var->data->next;
-			}
+			// while (var->data)
+			// {
+			// 	int i = 0;
+			// 	while (var->data->cmd_args && var->data->cmd_args[i])
+			// 	{
+			// 		printf("command and args:%s\n", var->data->cmd_args[i]);
+			// 		i++;
+			// 	}
+			// 	while (var->data && var->data->file)
+			// 	{
+			// 		printf("file_name: %s | file_type: %d\n",
+			// 		var->data->file->file_name, var->data->file->type);
+			// 		var->data->file = var->data->file->next;
+			// 	}
+			// 	printf("------------ next command ----------\n");
+			// 	var->data = var->data->next;
+			// }
 			reset(var);
 		}
 		free(input);
